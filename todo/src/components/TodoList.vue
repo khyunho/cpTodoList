@@ -1,14 +1,20 @@
 <template>
 	<div>
-		<ul>
+		<p v-for="todoItem in childValue" :key="todoItem.id">
+			{{ todoItem.title }}
+		</p>
+		<!-- <ul>
+			<li v-for="todoItem in childValue" :key="todoItem.id">
+				<p>{{ todoItem.title }}</p>
+			</li>
 			<li>{{ childValue.title }}</li>
-			<!-- <li v-for="todoItem in todoItems" :key="todoItem.id">
+			<li v-for="todoItem in todoItems" :key="todoItem.id">
 				<input type="checkbox" :id="todoItem.id" />
 				<label :for="todoItem.id"
 					><p class="title">{{ todoItem.title }}</p></label
 				>
-			</li> -->
-		</ul>
+			</li>
+		</ul> -->
 	</div>
 </template>
 
