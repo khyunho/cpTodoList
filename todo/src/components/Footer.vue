@@ -1,6 +1,6 @@
 <template>
 	<div class="footer">
-		<h1>Footer</h1>
+		<p>Footer</p>
 	</div>
 </template>
 
@@ -8,4 +8,9 @@
 export default {};
 </script>
 
-<style></style>
+<style>
+.footer {
+	font-size: 20px;
+	text-align: center;
+}
+</style>

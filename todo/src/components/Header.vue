@@ -1,6 +1,6 @@
 <template>
 	<div class="header">
-		<h1>Header</h1>
+		<h1>todos</h1>
 	</div>
 </template>
 
@@ -8,4 +8,9 @@
 export default {};
 </script>
 
-<style></style>
+<style>
+.header {
+	font-size: 50px;
+	text-align: center;
+}
+</style>
