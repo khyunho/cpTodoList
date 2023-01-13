@@ -1,7 +1,8 @@
 <template>
 	<div class="todo">
 		<input type="text" v-model="newTodoItem" @keyup.enter="addTodo" />
-		<TodoList :childValue="Basket"></TodoList>
+		<TodoList :childValue="Basket" @change="change"></TodoList>
+		<button class="clear" @click="clearTodo">Clear All</button>
 	</div>
 </template>
 
@@ -13,7 +14,6 @@ export default {
 		return {
 			keyName: 'todos-vuejs',
 			newTodoItem: '',
-			idNum: 0,
 			Basket: [],
 			TodoBasket: JSON.parse(localStorage.getItem('todos-vuejs')) || [],
 		};
@@ -21,18 +21,14 @@ export default {
 	components: {
 		TodoList,
 	},
-	mounted() {
+	created() {
 		this.Basket = this.TodoBasket;
 	},
 	methods: {
 		addTodo() {
-			if (JSON.parse(localStorage.getItem('todos-vuejs')) == null) {
-				this.idNum = 0;
-			}
-			// console.log('id', this.idNum);
-			// console.log('title', this.newTodoItem);
+			var idNum = this.Basket.length;
 			const value = {
-				id: this.idNum,
+				id: idNum,
 				title: this.newTodoItem,
 				completed: false,
 			};
@@ -45,10 +41,17 @@ export default {
 				this.clearInput();
 				this.Basket = this.TodoBasket;
 			}
-			// console.log(JSON.parse(localStorage.getItem('todos-vuejs')));
 		},
 		clearInput() {
 			this.newTodoItem = '';
+		},
+		clearTodo() {
+			this.Basket.splice(0);
+			localStorage.clear();
+		},
+		change(value) {
+			this.Basket.splice(value, 1);
+			localStorage.setItem(this.keyName, JSON.stringify(this.Basket));
 		},
 	},
 };

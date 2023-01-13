@@ -1,20 +1,9 @@
 <template>
 	<div>
-		<p v-for="todoItem in childValue" :key="todoItem.id">
+		<p v-for="(todoItem, index) in todoItems" :key="index">
 			{{ todoItem.title }}
+			<button v-on:click="deleteList(index)">delete</button>
 		</p>
-		<!-- <ul>
-			<li v-for="todoItem in childValue" :key="todoItem.id">
-				<p>{{ todoItem.title }}</p>
-			</li>
-			<li>{{ childValue.title }}</li>
-			<li v-for="todoItem in todoItems" :key="todoItem.id">
-				<input type="checkbox" :id="todoItem.id" />
-				<label :for="todoItem.id"
-					><p class="title">{{ todoItem.title }}</p></label
-				>
-			</li>
-		</ul> -->
 	</div>
 </template>
 
@@ -23,32 +12,20 @@ export default {
 	name: 'todolist',
 	props: ['childValue'],
 	data() {
-		return {
-			todoItems: [],
-		};
+		return {};
 	},
-	created() {
-		this.todoItems = JSON.parse(localStorage.getItem('todos-vuejs'));
-		console.log('child', this.childValue);
-		// 	console.log('list', this.todoItems.length);
-		// if (localStorage.length > 0) {
-
-		// for (var i = 0; i < this.todoItems.length; i++) {
-
-		// }
-
-		// for (var i = 0; i < localStorage.length; i++) {
-		// 	if (localStorage.key(i) !== 'loglevel:webpack-dev-server') {
-		// 		this.todoItems.push(localStorage.getItem(localStorage.key(i)));
-		// 	}
-		// }
-		// }
+	computed: {
+		todoItems() {
+			return this.childValue;
+		},
+	},
+	mounted() {},
+	methods: {
+		deleteList(id) {
+			this.$emit('change', id);
+		},
 	},
 };
 </script>
 
-<style>
-.todolist {
-	font-size: 10px;
-}
-</style>
+<style></style>
