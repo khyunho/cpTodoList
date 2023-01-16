@@ -1,7 +1,11 @@
 <template>
 	<div class="todo">
 		<input type="text" v-model="newTodoItem" @keyup.enter="addTodo" />
-		<TodoList :childValue="Basket" @change="change"></TodoList>
+		<TodoList
+			:childValue="Basket"
+			@deleteBtnClick="deleteBtnClick"
+			@checkBoxClick="checkBoxClick"
+		></TodoList>
 		<button class="clear" @click="clearTodo">Clear All</button>
 	</div>
 </template>
@@ -49,8 +53,15 @@ export default {
 			this.Basket.splice(0);
 			localStorage.clear();
 		},
-		change(value) {
-			this.Basket.splice(value, 1);
+		checkBoxClick(chxId) {
+			console.log('chxId', chxId);
+			this.Basket[chxId].completed = !this.Basket[chxId].completed;
+			localStorage.setItem(this.keyName, JSON.stringify(this.Basket));
+			console.log(this.Basket);
+		},
+		deleteBtnClick(btnId) {
+			console.log('delete', btnId);
+			this.Basket.splice(btnId, 1);
 			localStorage.setItem(this.keyName, JSON.stringify(this.Basket));
 		},
 	},
