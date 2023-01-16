@@ -3,6 +3,7 @@
 		<input type="text" v-model="newTodoItem" @keyup.enter="addTodo" />
 		<TodoList
 			:childValue="Basket"
+			:countCompleted="count"
 			@deleteBtnClick="deleteBtnClick"
 			@checkBoxClick="checkBoxClick"
 		></TodoList>
@@ -20,6 +21,7 @@ export default {
 			newTodoItem: '',
 			Basket: [],
 			TodoBasket: JSON.parse(localStorage.getItem('todos-vuejs')) || [],
+			count: 0,
 		};
 	},
 	components: {
@@ -54,13 +56,15 @@ export default {
 			localStorage.clear();
 		},
 		checkBoxClick(chxId) {
-			console.log('chxId', chxId);
 			this.Basket[chxId].completed = !this.Basket[chxId].completed;
 			localStorage.setItem(this.keyName, JSON.stringify(this.Basket));
-			console.log(this.Basket);
+			if (this.Basket[chxId].completed == true) {
+				this.count += 1;
+			} else {
+				this.count -= 1;
+			}
 		},
 		deleteBtnClick(btnId) {
-			console.log('delete', btnId);
 			this.Basket.splice(btnId, 1);
 			localStorage.setItem(this.keyName, JSON.stringify(this.Basket));
 		},

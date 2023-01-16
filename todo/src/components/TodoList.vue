@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<p>{{ todoItems.length }} items left</p>
+		<p>{{ countCompleted }} items left</p>
 		<ol>
 			<li v-for="(todoItem, index) in todoItems" :key="index">
 				<span v-if="todoItem.completed == true">
@@ -27,7 +27,7 @@
 <script>
 export default {
 	name: 'todolist',
-	props: ['childValue'],
+	props: ['childValue', 'countCompleted'],
 	data() {
 		return {};
 	},
@@ -35,6 +35,15 @@ export default {
 		todoItems() {
 			return this.childValue;
 		},
+		// countCompletedTrue() {
+		// 	let count = 0;
+		// 	for (let i = 0; i < this.childValue.length; i++) {
+		// 		if (this.childValue[i].completed == true) {
+		// 			count += 1;
+		// 		}
+		// 	}
+		// 	return count;
+		// },
 	},
 	mounted() {},
 	methods: {
