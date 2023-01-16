@@ -3,12 +3,23 @@
 		<input type="text" v-model="newTodoItem" @keyup.enter="addTodo" />
 		<TodoList
 			:childValue="Basket"
-			:countCompleted="count"
-			@deleteBtnClick="deleteBtnClick"
+			:childActiveValue="activeBasket"
+			:childCompletedValue="completedBasket"
+			:showAll="showAll"
+			:showActive="showActive"
+			:showCompleted="showCompleted"
+			@clearBtnClick="clearBtnClick"
 			@checkBoxClick="checkBoxClick"
 		></TodoList>
+		<div>
+			<button class="showAll" @click="showAllTodo">All</button>
+			<button class="showActive" @click="showActiveTodo">Active</button>
+			<button class="showCompleted" @click="showCompletedTodo">
+				Completed
+			</button>
+		</div>
 		<button class="clear" @click="clearTodo">Clear All</button>
-		<button class="deleteTrue" @click="deleteTrueTodo">Clear True</button>
+		<button class="clearTrue" @click="clearTrueTodo">Clear completed</button>
 	</div>
 </template>
 
@@ -21,8 +32,12 @@ export default {
 			keyName: 'todos-vuejs',
 			newTodoItem: '',
 			Basket: [],
+			activeBasket: [],
+			completedBasket: [],
 			TodoBasket: JSON.parse(localStorage.getItem('todos-vuejs')) || [],
-			count: 0,
+			showAll: true,
+			showActive: false,
+			showCompleted: false,
 		};
 	},
 	components: {
@@ -31,6 +46,7 @@ export default {
 	created() {
 		this.Basket = this.TodoBasket;
 	},
+	mounted() {},
 	methods: {
 		addTodo() {
 			var idNum = this.Basket.length;
@@ -55,29 +71,55 @@ export default {
 		checkBoxClick(chxId) {
 			this.Basket[chxId].completed = !this.Basket[chxId].completed;
 			localStorage.setItem(this.keyName, JSON.stringify(this.Basket));
-			if (this.Basket[chxId].completed == true) {
-				this.count++;
-			} else {
-				this.count--;
-			}
 		},
-		deleteBtnClick(btnId) {
+		clearBtnClick(btnId) {
 			this.Basket.splice(btnId, 1);
 			localStorage.setItem(this.keyName, JSON.stringify(this.Basket));
 		},
 		clearTodo() {
 			this.Basket.splice(0);
 			localStorage.clear();
-			this.count = 0;
 		},
-		deleteTrueTodo() {
+		clearTrueTodo() {
 			for (let i = 0; i < this.Basket.length; i++) {
 				if (this.Basket[i].completed == true) {
 					this.Basket.splice(i, 1);
 					i--;
-					this.count--;
 				}
 			}
+			localStorage.setItem(this.keyName, JSON.stringify(this.Basket));
+		},
+		showAllTodo() {
+			this.showAll = true;
+			this.showActive = false;
+			this.showCompleted = false;
+			this.Basket = JSON.parse(localStorage.getItem('todos-vuejs')) || [];
+		},
+		showActiveTodo() {
+			this.showAll = false;
+			this.showActive = true;
+			this.showCompleted = false;
+			this.Basket = JSON.parse(localStorage.getItem('todos-vuejs')) || [];
+			for (let i = 0; i < this.Basket.length; i++) {
+				if (this.Basket[i].completed == true) {
+					this.Basket.splice(i, 1);
+					i--;
+				}
+			}
+			this.activeBasket = this.Basket;
+		},
+		showCompletedTodo() {
+			this.showAll = false;
+			this.showActive = false;
+			this.showCompleted = true;
+			this.Basket = JSON.parse(localStorage.getItem('todos-vuejs')) || [];
+			for (let i = 0; i < this.Basket.length; i++) {
+				if (this.Basket[i].completed != true) {
+					this.Basket.splice(i, 1);
+					i--;
+				}
+			}
+			this.completedBasket = this.Basket;
 		},
 	},
 };
