@@ -8,6 +8,7 @@
 			@checkBoxClick="checkBoxClick"
 		></TodoList>
 		<button class="clear" @click="clearTodo">Clear All</button>
+		<button class="deleteTrue" @click="deleteTrueTodo">Clear True</button>
 	</div>
 </template>
 
@@ -51,22 +52,32 @@ export default {
 		clearInput() {
 			this.newTodoItem = '';
 		},
-		clearTodo() {
-			this.Basket.splice(0);
-			localStorage.clear();
-		},
 		checkBoxClick(chxId) {
 			this.Basket[chxId].completed = !this.Basket[chxId].completed;
 			localStorage.setItem(this.keyName, JSON.stringify(this.Basket));
 			if (this.Basket[chxId].completed == true) {
-				this.count += 1;
+				this.count++;
 			} else {
-				this.count -= 1;
+				this.count--;
 			}
 		},
 		deleteBtnClick(btnId) {
 			this.Basket.splice(btnId, 1);
 			localStorage.setItem(this.keyName, JSON.stringify(this.Basket));
+		},
+		clearTodo() {
+			this.Basket.splice(0);
+			localStorage.clear();
+			this.count = 0;
+		},
+		deleteTrueTodo() {
+			for (let i = 0; i < this.Basket.length; i++) {
+				if (this.Basket[i].completed == true) {
+					this.Basket.splice(i, 1);
+					i--;
+					this.count--;
+				}
+			}
 		},
 	},
 };
